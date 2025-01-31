@@ -14,8 +14,6 @@ export async function fetchRevenue() {
     // Artificially delay a response for demo purposes.
     // Don't do this in production :)
 
-    console.log("Fetching revenue data...");
-
     const data = await sql<Revenue>`SELECT * FROM revenue`;
 
     return data.rows;
