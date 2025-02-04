@@ -14,6 +14,7 @@ const InvoicePage = async (props: {
   const query = searchParams?.query || "";
   const curentPage = Number(searchParams?.page) || 1;
   const totalPages = await fetchInvoicesPages(query);
+  
 
   return (
     <div>
