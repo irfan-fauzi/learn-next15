@@ -27,7 +27,5 @@ export const createInvoice = async (formData: FormData) => {
     INSERT INTO invoices (customer_id, amount, status, date)
     VALUES (${customerId}, ${amountInCent}, ${status}, ${date})
   `;
-
-  revalidatePath("/dashboard/invoices");
   redirect("/dashboard/invoices");
 };
