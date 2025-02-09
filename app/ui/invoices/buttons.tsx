@@ -27,17 +27,20 @@ export function UpdateInvoice({ id }: { id: string }) {
   );
 }
 
-interface Invoice {
+type Invoice = {
   id: string;
-  status: string;
   name: string;
+  customer_id: string;
   amount: number;
-}
-
+  status: string;
+  date: string;
+};
 export function DeleteInvoice({ invoice }: { invoice: Invoice }) {
-  const { id } = invoice;
   const [isOpen, setIsOpen] = useState(false);
-
+  const deleteInvoiceWithId = async () => {
+    await deleteInvoice(invoice.id);
+    setIsOpen(false);
+  };
   return (
     <>
       <button
@@ -45,34 +48,34 @@ export function DeleteInvoice({ invoice }: { invoice: Invoice }) {
         className='rounded-md border p-2 hover:bg-gray-100'
       >
         <span className='sr-only'>Delete</span>
-        <TrashIcon className='w-5' />
+        <TrashIcon className='w-4' />
       </button>
       {isOpen && (
-        <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center'>
-          <div className='bg-white p-6 rounded-lg'>
-            <h2 className='text-lg font-medium mb-4'>Delete Invoice</h2>
-            <div className='mb-4 bg-green-200 p-2 rounded-lg border border-green-300'>
-              <p className='mb-1 font-semibold'>{invoice.name}</p>
-              <p className='mb-1'>{invoice.amount}</p>
-              <p className='mb-1'>{invoice.status}</p>
+        <div className='fixed inset-0 z-10 bg-black bg-opacity-50 flex items-center justify-center'>
+          <div className='bg-white p-4 rounded-lg fixed z-50'>
+            <h2 className='text-lg font-semibold'>
+              You want to delete this invoice?
+            </h2>
+            <div className="flex gap-2 mt-4 flex-col bg-green-200 p-3 rounded-lg">
+              <p>Name: {invoice.name}</p>
+              <p>Amount: $.{invoice.amount}</p>
+              <p>Status: <span className="bg-green-500 text-white px-[5px] py-[2px] text-xs rounded-md">{invoice.status}</span></p>
             </div>
-            <p>Are you sure you want to delete this invoice?</p>
-            <div className='mt-6 flex justify-end gap-4'>
+            <div className='flex justify-end gap-4 mt-4'>
               <button
                 onClick={() => setIsOpen(false)}
-                className='flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200'
+                className='rounded-md border p-2 hover:bg-gray-100'
               >
                 Cancel
               </button>
-              <button
-                onClick={() => {
-                  deleteInvoice(id);
-                  setIsOpen(false);
-                }}
-                className='flex h-10 items-center rounded-lg bg-red-600 px-4 text-sm font-medium text-white transition-colors hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600'
-              >
-                Delete
-              </button>
+              <form action={deleteInvoiceWithId}>
+                <button
+                  type='submit'
+                  className='rounded-md border p-2 bg-red-500 text-white'
+                >
+                  Delete
+                </button>
+              </form>
             </div>
           </div>
         </div>

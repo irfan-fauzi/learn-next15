@@ -8,6 +8,9 @@ const PageEdit = async ({ params }: { params: Promise<{ id: string }> }) => {
     fetchInvoiceById(id),
     fetchCustomers(),
   ]);
+
+  
+ 
   return (
     <main>
       <Breadcrumbs
