@@ -51,7 +51,7 @@ export function DeleteInvoice({ invoice }: { invoice: Invoice }) {
         <TrashIcon className='w-4' />
       </button>
       {isOpen && (
-        <div className='fixed inset-0 z-10 bg-black bg-opacity-50 flex items-center justify-center'>
+        <div className='fixed inset-0 z-10 bg-black bg-opacity-80 flex items-center justify-center'>
           <div className='bg-white p-4 rounded-lg fixed z-50'>
             <h2 className='text-lg font-semibold'>
               You want to delete this invoice?
