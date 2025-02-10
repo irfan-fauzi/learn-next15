@@ -60,12 +60,12 @@ export const updateInvoice = async (id: string, formData: FormData) => {
 };
 
 export const deleteInvoice = async (id: string) => {
+
   try {
     await sql`DELETE FROM invoices WHERE id = ${id}`;
   } catch (error) {
     // Unreachable code block
     console.error(error);
-    return { error: "Failed to delete invoice" };
   }
   revalidatePath("/dashboard/invoices");
 };
