@@ -3,6 +3,8 @@ import { z } from "zod";
 import postgres from "postgres";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { signIn } from "@/auth";
+import { AuthError } from "next-auth";
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
 const FormSchema = z.object({
@@ -59,7 +61,6 @@ export const createInvoice = async (prevState: State, formData: FormData) => {
     // If a database error occurs, return a more specific error.
     console.error(error);
     throw new Error("Failed to create invoice.");
-  
   }
 
   // Revalidate the cache for the invoices page and redirect the user.
@@ -69,7 +70,11 @@ export const createInvoice = async (prevState: State, formData: FormData) => {
 
 const UpdateInvoice = FormSchema.omit({ id: true, date: true });
 
-export const updateInvoice = async (id: string, prevState: State, formData: FormData) => {
+export const updateInvoice = async (
+  id: string,
+  prevState: State,
+  formData: FormData
+) => {
   const validatedFields = UpdateInvoice.safeParse({
     customerId: formData.get("customerId"),
     amount: formData.get("amount"),
@@ -110,4 +115,23 @@ export const deleteInvoice = async (id: string) => {
     throw new Error("Failed to delete invoice.");
   }
   revalidatePath("/dashboard/invoices");
+};
+
+export const authenticate = async (
+  prevState: string | undefined,
+  formData: FormData
+) => {
+  try {
+    await signIn("credentials", formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case "CredentialsSignin":
+          return "invalid credentials";
+        default:
+          return "Something went wrong";
+      }
+    }
+    throw error;
+  }
 };
