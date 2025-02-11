@@ -11,7 +11,11 @@ const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" }); // SSL digu
 async function getUser(email: string): Promise<User | undefined> {
   try {
     const user = await sql`SELECT * FROM users WHERE email = ${email}`;
-    return user[0];
+    if (user.length > 0) {
+      const { id, name, email, password } = user[0];
+      return { id, name, email, password } as User;
+    }
+    return undefined;
   } catch (error) {
     console.error("Failed to fetch user:", error);
     throw new Error("Failed to fetch user.");
