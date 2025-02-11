@@ -7,7 +7,9 @@ const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
 const FormSchema = z.object({
   id: z.string(),
-  customerId: z.string({ invalid_type_error: "from action: Please select a customer" }),
+  customerId: z.string({
+    invalid_type_error: "from action: Please select a customer",
+  }),
   amount: z.coerce.number().gt(0, { message: "Amount must be greater than 0" }),
   status: z.enum(["pending", "paid"], {
     invalid_type_error: "Please select a invoice status",
@@ -67,7 +69,11 @@ export const createInvoice = async (prevState: State, formData: FormData) => {
 
 const UpdateInvoice = FormSchema.omit({ id: true, date: true });
 
-export const updateInvoice = async (id: string, formData: FormData) => {
+export const updateInvoice = async (
+  id: string,
+  prevState: State,
+  formData: FormData
+) => {
   const { customerId, amount, status } = UpdateInvoice.parse({
     customerId: formData.get("customerId"),
     amount: formData.get("amount"),
