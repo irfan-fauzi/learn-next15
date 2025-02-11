@@ -30,6 +30,7 @@ export const createInvoice = async (formData: FormData) => {
   `;
   } catch (error) {
     console.error(error);
+    throw new Error("Failed to create invoice.");
   }
   revalidatePath("/dashboard/invoices");
   redirect("/dashboard/invoices");
@@ -53,6 +54,7 @@ export const updateInvoice = async (id: string, formData: FormData) => {
   `;
   } catch (error) {
     console.error(error);
+    throw new Error("Failed to update invoice.");
   }
 
   revalidatePath("/dashboard/invoices");
@@ -66,6 +68,7 @@ export const deleteInvoice = async (id: string) => {
   } catch (error) {
     // Unreachable code block
     console.error(error);
+    throw new Error("Failed to delete invoice.");
   }
   revalidatePath("/dashboard/invoices");
 };

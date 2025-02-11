@@ -1,6 +1,7 @@
 import { fetchCustomers, fetchInvoiceById } from "@/app/lib/data";
 import Breadcrumbs from "@/app/ui/invoices/breadcrumbs";
 import EditInvoiceForm from "@/app/ui/invoices/edit-form";
+import { notFound } from "next/navigation";
 
 const PageEdit = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
@@ -9,8 +10,10 @@ const PageEdit = async ({ params }: { params: Promise<{ id: string }> }) => {
     fetchCustomers(),
   ]);
 
-  
- 
+  if (!invoice) {
+    notFound();
+  }
+
   return (
     <main>
       <Breadcrumbs

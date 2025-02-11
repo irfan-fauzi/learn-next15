@@ -11,9 +11,7 @@ import { formatCurrency } from "./utils";
 
 export async function fetchRevenue() {
   try {
-    // Artificially delay a response for demo purposes.
-    // Don't do this in production :)
-
+    
     const data = await sql<Revenue>`SELECT * FROM revenue`;
 
     return data.rows;
@@ -155,6 +153,7 @@ export async function fetchInvoiceById(id: string) {
     }));
 
     return invoice[0];
+    
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to fetch invoice.");
