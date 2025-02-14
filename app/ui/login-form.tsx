@@ -2,7 +2,6 @@
 import { lusitana } from "@/app/ui/fonts";
 import {
   AtSymbolIcon,
-  ExclamationCircleIcon,
   KeyIcon,
 } from "@heroicons/react/24/outline";
 import { ArrowRightIcon } from "@heroicons/react/20/solid";
